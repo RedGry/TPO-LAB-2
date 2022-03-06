@@ -18,6 +18,17 @@ public class Cos extends Calculator {
     @Override
     public BigDecimal calc(double x) {
         int fl = 1;
+        double PI2 = Math.PI * 2;
+
+        if (x >= 0) {
+            while (x > PI2) {
+                x -= PI2;
+            }
+        } else if (x < 0){
+            while (x < PI2) {
+                x += PI2;
+            }
+        }
 
         if ((x > Math.PI/2) & (x < 3 * Math.PI/2))
             fl = -1;

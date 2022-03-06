@@ -26,7 +26,7 @@ public class App
         FunctionsSystem funMy = new FunctionsSystem(acc, t, ln, log3, log5, log10);
 
         System.out.printf("Sin: %.10f \t| %.10f \n", s.calc(-1), Math.sin(-1));
-        System.out.printf("Cos: %.10f \t| %.10f \n", c.calc(-1), Math.cos(-1));
+        System.out.printf("Cos: %.10f \t| %.10f \n", c.calc(99999), Math.cos(99999));
         System.out.printf("Tan: %.10f \t| %.10f \n", t.calc(-1), Math.tan(-1));
 
         System.out.printf("Ln: %.10f \t| %.10f \n", ln.calc(1.01), Math.log(1.01));
@@ -34,7 +34,7 @@ public class App
         System.out.printf("Log5: %.10f \t| %.10f \n", log5.calc(1.5), Math.log(1.5) / Math.log(5));
         System.out.printf("Log10: %.10f \t| %.10f \n", log10.calc(1.5), Math.log(1.5) / Math.log(10));
 
-        double x = 50;
+        double x = 1;
 
         double myTest = (((Math.log(x) / Math.log(3)) * (Math.log(x) / Math.log(10)) / Math.log(x)) + Math.log(x) / Math.log(5)
                 - (Math.log(x) / Math.log(3))) / (Math.log(x) * Math.log(x) / Math.log(10));

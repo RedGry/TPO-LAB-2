@@ -31,7 +31,7 @@ public class FunctionsSystem extends Calculator{
             return tan.calc(x).pow(2).pow(3).pow(3).pow(2).pow(3)
                     .setScale(getAccuracy(), RoundingMode.HALF_EVEN);
         } else {
-            if (ln.calc(x).doubleValue() == 0) throw new ArithmeticException("Division by Zero!");
+            if (ln.calc(x).doubleValue() == 0) return null;
             return (((log3.calc(x).multiply(log10.calc(x)).divide(ln.calc(x), RoundingMode.HALF_UP))
                     .add(log5.calc(x)))
                     .subtract(log3.calc(x)))
