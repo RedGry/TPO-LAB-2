@@ -7,6 +7,7 @@ import static java.math.BigDecimal.ONE;
 import static java.math.BigDecimal.ZERO;
 import static java.math.MathContext.DECIMAL128;
 import static java.math.RoundingMode.HALF_EVEN;
+import static java.math.RoundingMode.HALF_UP;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -32,24 +33,40 @@ public class Ln extends LimitedIterationsExpandableFunction {
       return ZERO;
     }
 
-    BigDecimal sum = ZERO;
-    BigDecimal previousSum;
+    double X = x.doubleValue();
+
+    BigDecimal curValue = BigDecimal.ZERO, prevValue;
     int i = 1;
-    do {
-      if (i > maxIterations) {
-        throw new ArithmeticException(
-            "Precision can not be reached with specified max iterations. Max value is " + sum);
-      }
-      previousSum = sum;
-      sum =
-          sum.add(
-              x.subtract(ONE)
-                  .divide(x.add(ONE), DECIMAL128.getPrecision(), HALF_EVEN)
-                  .pow(2 * i - 1)
-                  .divide(new BigDecimal(2 * i - 1), DECIMAL128.getPrecision(), HALF_EVEN));
-      i++;
-    } while (sum.subtract(previousSum).abs().compareTo(precision) >= 0);
-    sum = sum.multiply(new BigDecimal(2));
-    return sum.setScale(precision.scale(), HALF_EVEN);
+
+    if (Math.abs(X - 1) <= 1){
+      do {
+        prevValue = curValue;
+        curValue =  curValue.add(
+                (
+                        (BigDecimal.valueOf(-1).pow(i - 1))
+                                .multiply(BigDecimal.valueOf(X - 1).pow(i))
+                )
+                        .divide(BigDecimal.valueOf(i), precision.scale(), HALF_UP)
+        );
+        i++;
+      } while (new BigDecimal("0.1").pow(precision.scale()).compareTo((prevValue.subtract(curValue)).abs()) < 0 && i < maxIterations);
+      return curValue.add(prevValue).divide(BigDecimal.valueOf(2), HALF_EVEN);
+    } else {
+      do {
+        prevValue = curValue;
+        curValue =  curValue.add(
+                (
+                        BigDecimal.valueOf(-1).pow(i - 1)
+                                .divide(BigDecimal.valueOf(X - 1).pow(i), precision.scale(), HALF_UP)
+                )
+                        .divide(BigDecimal.valueOf(i), precision.scale(), HALF_UP)
+        );
+        i++;
+      } while (new BigDecimal("0.1").pow(precision.scale()).compareTo((prevValue.subtract(curValue)).abs()) < 0 && i < maxIterations);
+
+      curValue = curValue.add(calculate(BigDecimal.valueOf(X - 1), precision));
+    }
+
+    return curValue.setScale(precision.scale(), HALF_EVEN);
   }
 }

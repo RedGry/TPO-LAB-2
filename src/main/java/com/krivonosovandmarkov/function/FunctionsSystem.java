@@ -44,7 +44,7 @@ public class FunctionsSystem implements SeriesExpandableFunction{
               .pow(3)
               .setScale(precision.scale(), HALF_EVEN);
     } else {
-      if (ln.calculate(correctedX, precision).compareTo(ZERO) == 0) return null;
+      if (ln.calculate(correctedX, precision).equals(ZERO)) return null;
       return (((log3.calculate(correctedX, precision)
               .multiply(log10.calculate(correctedX, precision))
               .divide(ln.calculate(correctedX, precision), HALF_UP))

@@ -21,43 +21,43 @@ public class Sin extends LimitedIterationsExpandableFunction {
   @Override
   public BigDecimal calculate(final BigDecimal x, final BigDecimal precision)
       throws ArithmeticException {
-    checkValidity(x, precision);
 
-    final MathContext mc = new MathContext(DECIMAL128.getPrecision(), HALF_EVEN);
-    final BigDecimal correctedX = x.remainder(BigDecimalMath.pi(mc).multiply(new BigDecimal(2)));
+    double X = x.doubleValue();
 
-    if (correctedX.compareTo(ZERO) == 0) {
-      return ZERO;
+    double PI2 = Math.PI * 2;
+    int i = 0;
+    BigDecimal sum = new BigDecimal(0), prev;
+
+    if (X >= 0) {
+      while (X > PI2) {
+        X -= PI2;
+      }
+    } else if (X < 0){
+      while (X < PI2) {
+        X += PI2;
+      }
     }
 
-    BigDecimal sum = ZERO;
-    BigDecimal previousSum;
-    int i = 0;
     do {
-      if (i > maxIterations) {
-        throw new ArithmeticException(
-            "Precision can not be reached with specified max iterations. Max value is " + sum);
-      }
-      previousSum = sum;
-      sum =
-          sum.add(
-              ONE.negate()
-                  .pow(i)
-                  .multiply(correctedX.pow(2 * i + 1))
-                  .divide(factorial(2L * i + 1), DECIMAL128.getPrecision(), HALF_EVEN));
+      prev = sum;
+      sum = sum.add(minusOnePow(i).multiply(prod(X, 2 * i + 1)));
       i++;
-    } while (sum.subtract(previousSum).abs().compareTo(precision) >= 0);
+    } while (new BigDecimal("0.1").pow(precision.scale()).compareTo(prev.subtract(sum).abs()) < 0);
+
     return sum.setScale(precision.scale(), HALF_EVEN);
   }
 
-  private BigDecimal factorial(final long n) {
-    if (n == 0) {
-      return ONE;
+  private static BigDecimal minusOnePow(int n){
+    return BigDecimal.valueOf(1 - (n % 2) * 2);
+  }
+
+  private static BigDecimal prod(double x, int n){
+    BigDecimal accum = new BigDecimal(1);
+
+    for (int i = 1; i <= n; i++){
+      accum = accum.multiply( new BigDecimal(x / i));
     }
-    BigDecimal result = ONE;
-    for (long i = 1; i <= n; i++) {
-      result = result.multiply(valueOf(i));
-    }
-    return result;
+
+    return accum;
   }
 }

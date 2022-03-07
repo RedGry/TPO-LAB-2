@@ -20,7 +20,7 @@ public class App {
                 new BigDecimal(-1),
                 new BigDecimal(1),
                 new BigDecimal("0.1"),
-                new BigDecimal("0.001"));
+                new BigDecimal("0.0000000001"));
 
         final Sin sin = new Sin();
         CsvWriter.write(
@@ -29,7 +29,7 @@ public class App {
                 new BigDecimal(-1),
                 new BigDecimal(1),
                 new BigDecimal("0.1"),
-                new BigDecimal("0.001"));
+                new BigDecimal("0.0000000001"));
 
         final Tan tan = new Tan();
         CsvWriter.write(
@@ -38,7 +38,7 @@ public class App {
                 new BigDecimal(-1),
                 new BigDecimal(1),
                 new BigDecimal("0.1"),
-                new BigDecimal("0.001"));
+                new BigDecimal("0.0000000001"));
 
         final Ln ln = new Ln();
         CsvWriter.write(
@@ -47,7 +47,7 @@ public class App {
                 new BigDecimal(1),
                 new BigDecimal(20),
                 new BigDecimal("0.1"),
-                new BigDecimal("0.001"));
+                new BigDecimal("0.0000000001"));
 
         final Log log3 = new Log(3);
         CsvWriter.write(
@@ -56,7 +56,7 @@ public class App {
                 new BigDecimal(1),
                 new BigDecimal(20),
                 new BigDecimal("0.1"),
-                new BigDecimal("0.001"));
+                new BigDecimal("0.00000000001"));
 
         final Log log5 = new Log(5);
         CsvWriter.write(
@@ -65,7 +65,7 @@ public class App {
                 new BigDecimal(1),
                 new BigDecimal(20),
                 new BigDecimal("0.1"),
-                new BigDecimal("0.001"));
+                new BigDecimal("0.00000000001"));
 
         final Log log10 = new Log(10);
         CsvWriter.write(
@@ -74,15 +74,15 @@ public class App {
                 new BigDecimal(1),
                 new BigDecimal(20),
                 new BigDecimal("0.1"),
-                new BigDecimal("0.001"));
+                new BigDecimal("0.00000000001"));
 
         final FunctionsSystem func = new FunctionsSystem();
         CsvWriter.write(
                 "csv/func.csv",
                 func,
-                new BigDecimal(-5),
-                new BigDecimal(8),
-                new BigDecimal("0.67"),
-                new BigDecimal("0.001"));
+                new BigDecimal(-2),
+                new BigDecimal(2),
+                new BigDecimal("0.1"),
+                new BigDecimal("0.00000000001"));
     }
 }
