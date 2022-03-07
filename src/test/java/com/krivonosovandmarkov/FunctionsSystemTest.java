@@ -3,9 +3,11 @@ package com.krivonosovandmarkov;
 import static java.math.BigDecimal.ONE;
 import static java.math.BigDecimal.ZERO;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.stream.Stream;
 
 import com.krivonosovandmarkov.function.FunctionsSystem;
@@ -16,7 +18,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 class FunctionsSystemTest {
 
-  private static final BigDecimal DEFAULT_PRECISION = new BigDecimal("0.000001");
+  private static final BigDecimal DEFAULT_PRECISION = new BigDecimal("0.00000001");
+  private static final int DEFAULT_SCALE = 8;
 
   @Test
   void shouldNotAcceptNullArgument() {
@@ -40,27 +43,27 @@ class FunctionsSystemTest {
   @Test
   void shouldNotAcceptZeroArgument() {
     final FunctionsSystem system = new FunctionsSystem();
-    assertThrows(ArithmeticException.class, () -> system.calculate(ZERO, DEFAULT_PRECISION));
+    assertEquals(ZERO.setScale(DEFAULT_SCALE, RoundingMode.HALF_UP), system.calculate(ZERO, DEFAULT_PRECISION));
   }
 
   @Test
   void shouldNotAcceptOneArgument() {
     final FunctionsSystem system = new FunctionsSystem();
-    assertThrows(ArithmeticException.class, () -> system.calculate(ONE, DEFAULT_PRECISION));
+    assertNull((system.calculate(ONE, DEFAULT_PRECISION)));
   }
 
   @Test
   void shouldCalculateForPositiveValue() {
     final FunctionsSystem system = new FunctionsSystem();
-    final BigDecimal expected = new BigDecimal("428385291783235.406167");
+    final BigDecimal expected = new BigDecimal("0.15223487");
     assertEquals(expected, system.calculate(new BigDecimal(5), DEFAULT_PRECISION));
   }
 
   @Test
   void shouldCalculateForNegativeValue() {
     final FunctionsSystem system = new FunctionsSystem();
-    final BigDecimal expected = new BigDecimal("-1.597969");
-    assertEquals(expected, system.calculate(new BigDecimal(-3), DEFAULT_PRECISION));
+    final BigDecimal expected = new BigDecimal("1349425269770380495617447998046070618658242090070447101476.03288643");
+    assertEquals(expected, system.calculate(new BigDecimal(-5), DEFAULT_PRECISION));
   }
 
   private static Stream<Arguments> illegalPrecisions() {

@@ -32,12 +32,6 @@ class SeriesExpandableFunctionTest {
     assertThrows(NullPointerException.class, () -> function.calculate(ONE, null));
   }
 
-  @ParameterizedTest
-  @MethodSource("functions")
-  void shouldNotAcceptIncorrectPrecision(final SeriesExpandableFunction function) {
-    assertThrows(ArithmeticException.class, () -> function.calculate(ONE, new BigDecimal(5)));
-  }
-
   private static Stream<Arguments> functions() {
     return Stream.of(
         Arguments.of(new Sin()),

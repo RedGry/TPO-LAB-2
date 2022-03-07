@@ -20,7 +20,7 @@ class SinTest {
   @Test
   void shouldCalculateForZero() {
     final Sin sin = new Sin();
-    assertEquals(ZERO, sin.calculate(ZERO, DEFAULT_PRECISION));
+    assertEquals(ZERO.setScale(4, HALF_EVEN), sin.calculate(ZERO, DEFAULT_PRECISION));
   }
 
   @Test

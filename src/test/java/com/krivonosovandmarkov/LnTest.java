@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 class LnTest {
 
-  private static final BigDecimal DEFAULT_PRECISION = new BigDecimal("0.0001");
+  private static final BigDecimal DEFAULT_PRECISION = new BigDecimal("0.00001");
 
   @Test
   void shouldNotCalculateForZero() {
@@ -29,7 +29,7 @@ class LnTest {
   @Test
   void shouldCalculateForPositive() {
     final Ln ln = new Ln();
-    final BigDecimal expected = new BigDecimal("1.3863");
+    final BigDecimal expected = new BigDecimal("1.38629");
     assertEquals(expected, ln.calculate(new BigDecimal(4), DEFAULT_PRECISION));
   }
 }

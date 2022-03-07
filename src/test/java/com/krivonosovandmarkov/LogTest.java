@@ -63,7 +63,7 @@ class LogTest {
   @Test
   void shouldCalculateForPositive() {
     final Log log = new Log(5);
-    final BigDecimal expected = new BigDecimal("2.4657");
+    final BigDecimal expected = new BigDecimal("2.4663");
     assertEquals(expected, log.calculate(new BigDecimal(53), DEFAULT_PRECISION));
   }
 }
