@@ -1,5 +1,6 @@
 package com.krivonosovandmarkov;
 
+import com.krivonosovandmarkov.function.FunctionsSystem;
 import com.krivonosovandmarkov.logariphmic.Ln;
 import com.krivonosovandmarkov.logariphmic.Log;
 import com.krivonosovandmarkov.trigonometric.Cos;
@@ -73,6 +74,15 @@ public class App {
                 new BigDecimal(1),
                 new BigDecimal(20),
                 new BigDecimal("0.1"),
+                new BigDecimal("0.001"));
+
+        final FunctionsSystem func = new FunctionsSystem();
+        CsvWriter.write(
+                "csv/func.csv",
+                func,
+                new BigDecimal(-5),
+                new BigDecimal(8),
+                new BigDecimal("0.67"),
                 new BigDecimal("0.001"));
     }
 }

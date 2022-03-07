@@ -14,7 +14,7 @@ import com.krivonosovandmarkov.trigonometric.Tan;
 import java.math.BigDecimal;
 import java.math.MathContext;
 
-public class FunctionsSystem {
+public class FunctionsSystem implements SeriesExpandableFunction{
 
   private final Sin sin;
   private final Tan tan;
