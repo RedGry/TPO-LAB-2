@@ -30,6 +30,24 @@
           <version>1.18.22</version>
           <scope>compile</scope>
       </dependency>
+      <dependency>
+          <groupId>org.mockito</groupId>
+          <artifactId>mockito-core</artifactId>
+          <version>4.0.0</version>
+          <scope>test</scope>
+      </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-junit-jupiter</artifactId>
+      <version>4.0.0</version>
+      <scope>test</scope>
+    </dependency>
+      <dependency>
+          <groupId>ch.obermuhlner</groupId>
+          <artifactId>big-math</artifactId>
+          <version>2.3.0</version>
+          <scope>test</scope>
+      </dependency>
   </dependencies>
 
   <build>

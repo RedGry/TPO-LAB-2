@@ -35,8 +35,9 @@ public class Cos extends Calculator {
         if ((x < -Math.PI/2) & (x > -3 * Math.PI/2))
             fl = -1;
 
-        return new BigDecimal(1)
-                .subtract(sin.calc(x).multiply(sin.calc(x)))
+        return (new BigDecimal(1)
+                .subtract(sin.calc(x).multiply(sin.calc(x))))
+                .setScale(getAccuracy()/2, RoundingMode.HALF_EVEN)
                 .sqrt(new MathContext(getAccuracy(), RoundingMode.HALF_UP))
                 .multiply(BigDecimal.valueOf(fl)).setScale(getAccuracy(), RoundingMode.HALF_EVEN);
     }
