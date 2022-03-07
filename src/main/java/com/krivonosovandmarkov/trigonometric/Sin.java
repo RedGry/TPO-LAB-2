@@ -1,56 +1,63 @@
 package com.krivonosovandmarkov.trigonometric;
 
-import com.krivonosovandmarkov.Calculator;
+import static java.math.BigDecimal.ONE;
+import static java.math.BigDecimal.ZERO;
+import static java.math.BigDecimal.valueOf;
+import static java.math.MathContext.DECIMAL128;
+import static java.math.RoundingMode.HALF_EVEN;
+
+import ch.obermuhlner.math.big.BigDecimalMath;
+import com.krivonosovandmarkov.function.LimitedIterationsExpandableFunction;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.MathContext;
-import java.math.RoundingMode;
 
-public class Sin extends Calculator {
+public class Sin extends LimitedIterationsExpandableFunction {
 
-    public Sin(int accuracy) {
-        super(accuracy);
+  public Sin() {
+    super();
+  }
+
+  @Override
+  public BigDecimal calculate(final BigDecimal x, final BigDecimal precision)
+      throws ArithmeticException {
+    checkValidity(x, precision);
+
+    final MathContext mc = new MathContext(DECIMAL128.getPrecision(), HALF_EVEN);
+    final BigDecimal correctedX = x.remainder(BigDecimalMath.pi(mc).multiply(new BigDecimal(2)));
+
+    if (correctedX.compareTo(ZERO) == 0) {
+      return ZERO;
     }
 
-    @Override
-    public BigDecimal calc(double x) {
-        double PI2 = Math.PI * 2;
-        int i = 0;
-        BigDecimal sum = new BigDecimal(0), prev;
+    BigDecimal sum = ZERO;
+    BigDecimal previousSum;
+    int i = 0;
+    do {
+      if (i > maxIterations) {
+        throw new ArithmeticException(
+            "Precision can not be reached with specified max iterations. Max value is " + sum);
+      }
+      previousSum = sum;
+      sum =
+          sum.add(
+              ONE.negate()
+                  .pow(i)
+                  .multiply(correctedX.pow(2 * i + 1))
+                  .divide(factorial(2L * i + 1), DECIMAL128.getPrecision(), HALF_EVEN));
+      i++;
+    } while (sum.subtract(previousSum).abs().compareTo(precision) >= 0);
+    return sum.setScale(precision.scale(), HALF_EVEN);
+  }
 
-        if (x >= 0) {
-            while (x > PI2) {
-                x -= PI2;
-            }
-        } else if (x < 0){
-            while (x < PI2) {
-                x += PI2;
-            }
-        }
-
-        do {
-            prev = sum;
-            sum = sum.add(minusOnePow(i).multiply(prod(x, 2 * i + 1)));
-            i++;
-        } while (new BigDecimal("0.1").pow(getAccuracy()).compareTo(prev.subtract(sum).abs()) < 0);
-
-
-        return sum.setScale(getAccuracy(), RoundingMode.HALF_EVEN);
+  private BigDecimal factorial(final long n) {
+    if (n == 0) {
+      return ONE;
     }
-
-    private static BigDecimal minusOnePow(int n){
-        return BigDecimal.valueOf(1 - (n % 2) * 2);
+    BigDecimal result = ONE;
+    for (long i = 1; i <= n; i++) {
+      result = result.multiply(valueOf(i));
     }
-
-    private static BigDecimal prod(double x, int n){
-        BigDecimal accum = new BigDecimal(1);
-
-        for (int i = 1; i <= n; i++){
-            accum = accum.multiply( new BigDecimal(x / i));
-        }
-
-        return accum;
-    }
-
+    return result;
+  }
 }

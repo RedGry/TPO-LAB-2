@@ -1,44 +1,48 @@
 package com.krivonosovandmarkov.trigonometric;
 
-import com.krivonosovandmarkov.Calculator;
+import static java.math.BigDecimal.ONE;
+import static java.math.BigDecimal.ZERO;
+import static java.math.MathContext.DECIMAL128;
+import static java.math.RoundingMode.HALF_EVEN;
+
+import ch.obermuhlner.math.big.BigDecimalMath;
+import com.krivonosovandmarkov.function.LimitedIterationsExpandableFunction;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.math.RoundingMode;
 
-public class Cos extends Calculator {
+public class Cos extends LimitedIterationsExpandableFunction {
 
-    private final Sin sin;
+  private final Sin sin;
 
-    public Cos(int accuracy, Sin sin) {
-        super(accuracy);
-        this.sin = sin;
+  public Cos() {
+    super();
+    this.sin = new Sin();
+  }
+
+  public Cos(final Sin sin) {
+    super();
+    this.sin = sin;
+  }
+
+  @Override
+  public BigDecimal calculate(final BigDecimal x, final BigDecimal precision)
+      throws ArithmeticException {
+    checkValidity(x, precision);
+
+    final MathContext mc = new MathContext(DECIMAL128.getPrecision(), HALF_EVEN);
+    final BigDecimal correctedX = x.remainder(BigDecimalMath.pi(mc).multiply(new BigDecimal(2)));
+
+    if (correctedX.compareTo(ZERO) == 0) {
+      return ONE;
     }
 
-    @Override
-    public BigDecimal calc(double x) {
-        int fl = 1;
-        double PI2 = Math.PI * 2;
-
-        if (x >= 0) {
-            while (x > PI2) {
-                x -= PI2;
-            }
-        } else if (x < 0){
-            while (x < PI2) {
-                x += PI2;
-            }
-        }
-
-        if ((x > Math.PI/2) & (x < 3 * Math.PI/2))
-            fl = -1;
-        if ((x < -Math.PI/2) & (x > -3 * Math.PI/2))
-            fl = -1;
-
-        return new BigDecimal(1)
-                .subtract(sin.calc(x).multiply(sin.calc(x)))
-                .sqrt(new MathContext(getAccuracy(), RoundingMode.HALF_UP))
-                .multiply(BigDecimal.valueOf(fl)).setScale(getAccuracy(), RoundingMode.HALF_EVEN);
-    }
-
+    final BigDecimal result =
+        sin.calculate(
+            BigDecimalMath.pi(mc)
+                .divide(new BigDecimal(2), DECIMAL128.getPrecision(), HALF_EVEN)
+                .subtract(correctedX),
+            precision);
+    return result.setScale(precision.scale(), HALF_EVEN);
+  }
 }

@@ -6,42 +6,73 @@ import com.krivonosovandmarkov.trigonometric.Cos;
 import com.krivonosovandmarkov.trigonometric.Sin;
 import com.krivonosovandmarkov.trigonometric.Tan;
 
+import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
-public class App
-{
-    public static void main( String[] args ){
+public class App {
 
-        int acc = 20;
+  public static void main(String[] args) throws IOException {
+    final Cos cos = new Cos();
+    CsvWriter.write(
+        "csv/cos.csv",
+        cos,
+        new BigDecimal(-1),
+        new BigDecimal(1),
+        new BigDecimal("0.1"),
+        new BigDecimal("0.001"));
 
-        Sin s = new Sin(acc);
-        Cos c = new Cos(acc, s);
-        Tan t = new Tan(acc, s, c);
-        Ln ln = new Ln(acc);
-        Log log3 = new Log(acc, 3, ln);
-        Log log5 = new Log(acc, 5, ln);
-        Log log10 = new Log(acc, 10, ln);
+    final Sin sin = new Sin();
+    CsvWriter.write(
+            "csv/sin.csv",
+            sin,
+            new BigDecimal(-1),
+            new BigDecimal(1),
+            new BigDecimal("0.1"),
+            new BigDecimal("0.001"));
 
-        FunctionsSystem funMy = new FunctionsSystem(acc, t, ln, log3, log5, log10);
+    final Tan tan = new Tan();
+    CsvWriter.write(
+            "csv/tan.csv",
+            tan,
+            new BigDecimal(-1),
+            new BigDecimal(1),
+            new BigDecimal("0.1"),
+            new BigDecimal("0.001"));
 
-        System.out.printf("Sin: %.10f \t| %.10f \n", s.calc(-1), Math.sin(-1));
-        System.out.printf("Cos: %.10f \t| %.10f \n", c.calc(99999), Math.cos(99999));
-        System.out.printf("Tan: %.10f \t| %.10f \n", t.calc(-1), Math.tan(-1));
+    final Ln ln = new Ln();
+    CsvWriter.write(
+            "csv/ln.csv",
+            ln,
+            new BigDecimal(1),
+            new BigDecimal(20),
+            new BigDecimal("0.1"),
+            new BigDecimal("0.001"));
 
-        System.out.printf("Ln: %.10f \t| %.10f \n", ln.calc(1.01), Math.log(1.01));
-        System.out.printf("Log3: %.10f \t| %.10f \n", log3.calc(1.5), Math.log(1.5) / Math.log(3));
-        System.out.printf("Log5: %.10f \t| %.10f \n", log5.calc(1.5), Math.log(1.5) / Math.log(5));
-        System.out.printf("Log10: %.10f \t| %.10f \n", log10.calc(1.5), Math.log(1.5) / Math.log(10));
+    final Log log3 = new Log(3);
+    CsvWriter.write(
+            "csv/log3.csv",
+            log3,
+            new BigDecimal(1),
+            new BigDecimal(20),
+            new BigDecimal("0.1"),
+            new BigDecimal("0.001"));
 
-        double x = 1;
+    final Log log5 = new Log(5);
+    CsvWriter.write(
+            "csv/log5.csv",
+            log5,
+            new BigDecimal(1),
+            new BigDecimal(20),
+            new BigDecimal("0.1"),
+            new BigDecimal("0.001"));
 
-        double myTest = (((Math.log(x) / Math.log(3)) * (Math.log(x) / Math.log(10)) / Math.log(x)) + Math.log(x) / Math.log(5)
-                - (Math.log(x) / Math.log(3))) / (Math.log(x) * Math.log(x) / Math.log(10));
-
-        System.out.printf("MyFun(x <= 0): %.10e \t| %.10e \n", funMy.calc(-3), Math.pow(Math.tan(-3), 108));
-        System.out.printf("MyFun(x > 0) : %.10e \t| %.10e \n", funMy.calc(x), myTest);
-
-    }
-
+    final Log log10 = new Log(10);
+    CsvWriter.write(
+            "csv/log10.csv",
+            log10,
+            new BigDecimal(1),
+            new BigDecimal(20),
+            new BigDecimal("0.1"),
+            new BigDecimal("0.001"));
+  }
 }
