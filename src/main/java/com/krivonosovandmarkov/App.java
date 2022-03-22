@@ -1,5 +1,6 @@
 package com.krivonosovandmarkov;
 
+import com.krivonosovandmarkov.function.FunctionsSystem;
 import com.krivonosovandmarkov.logariphmic.Ln;
 import com.krivonosovandmarkov.logariphmic.Log;
 import com.krivonosovandmarkov.trigonometric.Cos;
@@ -7,78 +8,81 @@ import com.krivonosovandmarkov.trigonometric.Sin;
 import com.krivonosovandmarkov.trigonometric.Tan;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
-public class App
-{
+public class App {
+
     public static void main(String[] args) throws IOException {
-
-        final int ACCURACY = 20;
-
-        final Sin sin = new Sin(ACCURACY);
-        CsvWriter.write(
-                "csv/sin.csv",
-                sin,
-                -1.0,
-                1.0,
-                0.1);
-
-        final Cos cos = new Cos(ACCURACY, sin);
+        final Cos cos = new Cos();
         CsvWriter.write(
                 "csv/cos.csv",
                 cos,
-                -1.0,
-                1.0,
-                0.1);
+                new BigDecimal(-1),
+                new BigDecimal(1),
+                new BigDecimal("0.1"),
+                new BigDecimal("0.0000000001"));
 
-        final Tan tan = new Tan(ACCURACY, sin, cos);
+        final Sin sin = new Sin();
+        CsvWriter.write(
+                "csv/sin.csv",
+                sin,
+                new BigDecimal(-1),
+                new BigDecimal(1),
+                new BigDecimal("0.1"),
+                new BigDecimal("0.0000000001"));
+
+        final Tan tan = new Tan();
         CsvWriter.write(
                 "csv/tan.csv",
                 tan,
-                -1.0,
-                1.0,
-                0.1);
+                new BigDecimal(-1),
+                new BigDecimal(1),
+                new BigDecimal("0.1"),
+                new BigDecimal("0.0000000001"));
 
-        final Ln ln = new Ln(ACCURACY);
+        final Ln ln = new Ln();
         CsvWriter.write(
                 "csv/ln.csv",
                 ln,
-                1.0,
-                4.0,
-                1.0);
+                new BigDecimal(1),
+                new BigDecimal(20),
+                new BigDecimal("0.1"),
+                new BigDecimal("0.0000000001"));
 
-        final Log log3 = new Log(ACCURACY, 3, ln);
+        final Log log3 = new Log(3);
         CsvWriter.write(
                 "csv/log3.csv",
                 log3,
-                1.0,
-                4.0,
-                1.0);
+                new BigDecimal(1),
+                new BigDecimal(20),
+                new BigDecimal("0.1"),
+                new BigDecimal("0.00000000001"));
 
-        final Log log5 = new Log(ACCURACY, 5, ln);
+        final Log log5 = new Log(5);
         CsvWriter.write(
                 "csv/log5.csv",
                 log5,
-                1.0,
-                4.0,
-                1.0);
+                new BigDecimal(1),
+                new BigDecimal(20),
+                new BigDecimal("0.1"),
+                new BigDecimal("0.00000000001"));
 
-        final Log log10 = new Log(ACCURACY, 10, ln);
+        final Log log10 = new Log(10);
         CsvWriter.write(
                 "csv/log10.csv",
                 log10,
-                1.0,
-                4.0,
-                1.0);
+                new BigDecimal(1),
+                new BigDecimal(20),
+                new BigDecimal("0.1"),
+                new BigDecimal("0.00000000001"));
 
-
-        final FunctionsSystem my = new FunctionsSystem(ACCURACY, tan, ln, log3, log5, log10);
+        final FunctionsSystem func = new FunctionsSystem();
         CsvWriter.write(
-                "csv/my.csv",
-                my,
-                -1.0,
-                1.0,
-                0.25);
-
+                "csv/func.csv",
+                func,
+                new BigDecimal(-2),
+                new BigDecimal(2),
+                new BigDecimal("0.1"),
+                new BigDecimal("0.00000000001"));
     }
-
 }
